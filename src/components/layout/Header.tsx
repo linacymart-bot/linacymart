@@ -13,6 +13,10 @@ export function Header() {
   
   const { getCartCount, setCartDrawerOpen } = useCartStore();
 
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   useEffect(() => {
     setMounted(true);
   }, []);
