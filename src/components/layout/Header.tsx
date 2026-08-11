@@ -109,22 +109,43 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-100 bg-white">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`block px-3 py-3 rounded-md text-base font-medium ${
-                    pathname === item.href
-                      ? 'bg-primary-50 text-primary-700'
-                      : 'text-slate-700 hover:bg-slate-50'
-                  }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
+          <div className="md:hidden border-t border-slate-100 bg-white shadow-lg absolute w-full left-0">
+            <div className="px-4 py-4 space-y-4">
+              {/* Mobile Search */}
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const query = formData.get('q');
+                  if (query) window.location.href = `/products?q=${encodeURIComponent(query.toString())}`;
+                }}
+                className="relative w-full"
+              >
+                <input 
+                  type="text" 
+                  name="q"
+                  placeholder="Search products..." 
+                  className="pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 w-full transition-all"
+                />
+                <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              </form>
+
+              <div className="flex flex-col space-y-2">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`block px-4 py-3 rounded-xl text-base font-medium ${
+                      pathname === item.href
+                        ? 'bg-primary-50 text-primary-700'
+                        : 'text-slate-700 hover:bg-slate-50'
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         )}
