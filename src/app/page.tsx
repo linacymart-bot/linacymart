@@ -1,69 +1,184 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { ArrowRight, ShieldCheck, Truck, Clock } from 'lucide-react';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/MotionWrapper';
 
-export default function Home() {
+export const revalidate = 3600; // Revalidate every hour
+
+export default async function Home() {
+  const supabase = await createClient();
+
+  // Fetch active categories
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('active', true)
+    .order('name');
+
+  // Fetch featured products
+  const { data: featuredProducts } = await supabase
+    .from('products')
+    .select(`
+      *,
+      product_images (url, is_primary)
+    `)
+    .eq('active', true)
+    .eq('status', 'published')
+    .eq('featured', true)
+    .limit(4);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      {/* Hero Section */}
+      <section className="bg-primary-900 py-24 md:py-32 relative overflow-hidden flex flex-col justify-center">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/60 to-transparent"></div>
+        <div className="container-custom relative z-10">
+          <StaggerContainer className="max-w-3xl">
+            <StaggerItem>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-[1.1]">
+                Premium Health & Wellness Solutions
+              </h1>
+            </StaggerItem>
+            <StaggerItem>
+              <p className="text-lg md:text-xl text-primary-50 mb-10 max-w-2xl leading-relaxed">
+                Discover authentic BF Suma products designed to boost your immunity, enhance vitality, and support your overall well-being.
+              </p>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/products" className="btn-primary flex justify-center items-center gap-2">
+                  Shop Products <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link href="/become-a-member" className="btn-secondary flex justify-center items-center">
+                  Become a Member
+                </Link>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="border-b border-slate-100 bg-white py-12">
+        <div className="container-custom">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <StaggerItem className="flex flex-col items-center p-4">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4 text-primary-600">
+                <ShieldCheck className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Authentic Products</h3>
+              <p className="text-sm text-slate-500 mt-2 max-w-xs">Guaranteed genuine BF Suma supplements.</p>
+            </StaggerItem>
+            <StaggerItem className="flex flex-col items-center p-4">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4 text-primary-600">
+                <Truck className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Nationwide Delivery</h3>
+              <p className="text-sm text-slate-500 mt-2 max-w-xs">Fast and secure shipping via G4S to all 47 counties.</p>
+            </StaggerItem>
+            <StaggerItem className="flex flex-col items-center p-4">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4 text-primary-600">
+                <Clock className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Expert Support</h3>
+              <p className="text-sm text-slate-500 mt-2 max-w-xs">Chat directly with us on WhatsApp for assistance.</p>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
-      </main>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-20 bg-background">
+        <div className="container-custom">
+          <FadeIn className="flex justify-between items-end mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Featured Products</h2>
+              <p className="text-slate-500 mt-3 text-lg">Our most popular health solutions.</p>
+            </div>
+            <Link href="/products" className="hidden sm:flex text-primary-700 font-semibold hover:text-primary-900 items-center gap-1 transition-colors">
+              View All <ArrowRight className="w-5 h-5" />
+            </Link>
+          </FadeIn>
+          
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredProducts?.map((product) => {
+              const primaryImage = product.product_images?.find((img: any) => img.is_primary)?.url 
+                || product.product_images?.[0]?.url 
+                || '/placeholder.svg';
+                
+              return (
+                <StaggerItem key={product.id} className="card group relative">
+                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-6 overflow-hidden">
+                    <div className="absolute inset-0 bg-primary-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+                    <img 
+                      src={primaryImage} 
+                      alt={product.name} 
+                      className="object-contain w-full h-full relative z-10 transition-transform duration-700 group-hover:scale-110 drop-shadow-sm"
+                    />
+                    {product.sale_price && (
+                      <span className="absolute top-4 left-4 bg-secondary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full z-20 shadow-sm">
+                        SALE
+                      </span>
+                    )}
+                  </Link>
+                  <div className="p-6 border-t border-slate-50">
+                    <h3 className="font-bold text-slate-900 mb-2 line-clamp-1 text-lg">
+                      <Link href={`/products/${product.slug}`} className="hover:text-primary-700 transition-colors">
+                        {product.name}
+                      </Link>
+                    </h3>
+                    <p className="text-sm text-slate-500 line-clamp-2 mb-6 h-10 leading-relaxed">
+                      {product.short_description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {product.sale_price ? (
+                          <div className="flex flex-col">
+                            <span className="text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                            <span className="text-xl font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
+                          </div>
+                        ) : (
+                          <span className="text-xl font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
+                        )}
+                      </div>
+                      <Link href={`/products/${product.slug}`} className="w-10 h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300">
+                        <ArrowRight className="w-5 h-5" />
+                      </Link>
+                    </div>
+                  </div>
+                </StaggerItem>
+              );
+            })}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute -left-40 top-20 w-80 h-80 bg-primary-50 rounded-full blur-3xl opacity-50"></div>
+        <div className="container-custom relative z-10">
+          <FadeIn className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Shop by Category</h2>
+            <p className="text-slate-500 mt-4 text-lg">Find exactly what you need for your health journey.</p>
+          </FadeIn>
+          
+          <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {categories?.map((category) => (
+              <StaggerItem key={category.id}>
+                <Link 
+                  href={`/products?category=${category.slug}`}
+                  className="block bg-background p-8 rounded-2xl border border-slate-100 hover:border-primary-200 hover:bg-primary-50 transition-all duration-300 text-center group h-full"
+                >
+                  <h3 className="font-bold text-slate-900 group-hover:text-primary-800 transition-colors text-lg">
+                    {category.name}
+                  </h3>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
     </div>
   );
 }
