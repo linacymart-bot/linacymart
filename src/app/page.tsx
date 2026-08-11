@@ -101,7 +101,7 @@ export default async function Home() {
             </Link>
           </FadeIn>
           
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {featuredProducts?.map((product) => {
               const primaryImage = product.product_images?.find((img: any) => img.is_primary)?.url 
                 || product.product_images?.[0]?.url 
@@ -109,7 +109,7 @@ export default async function Home() {
                 
               return (
                 <StaggerItem key={product.id} className="card group relative">
-                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-6 overflow-hidden">
+                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-3 sm:p-6 overflow-hidden">
                     <div className="absolute inset-0 bg-primary-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                     <img 
                       src={primaryImage} 
@@ -122,28 +122,30 @@ export default async function Home() {
                       </span>
                     )}
                   </Link>
-                  <div className="p-6 border-t border-slate-50">
-                    <h3 className="font-bold text-slate-900 mb-2 line-clamp-1 text-lg">
-                      <Link href={`/products/${product.slug}`} className="hover:text-primary-700 transition-colors">
-                        {product.name}
-                      </Link>
-                    </h3>
-                    <p className="text-sm text-slate-500 line-clamp-2 mb-6 h-10 leading-relaxed">
-                      {product.short_description}
-                    </p>
+                  <div className="p-3 sm:p-6 border-t border-slate-50 flex flex-col justify-between h-full">
+                    <div>
+                      <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-lg leading-tight">
+                        <Link href={`/products/${product.slug}`} className="hover:text-primary-700 transition-colors">
+                          {product.name}
+                        </Link>
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 mb-3 sm:mb-6 h-8 sm:h-10 leading-relaxed hidden sm:block">
+                        {product.short_description}
+                      </p>
+                    </div>
                     <div className="flex items-center justify-between">
                       <div>
                         {product.sale_price ? (
                           <div className="flex flex-col">
-                            <span className="text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
-                            <span className="text-xl font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
+                            <span className="text-[10px] sm:text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                            <span className="text-sm sm:text-xl font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
                           </div>
                         ) : (
-                          <span className="text-xl font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
+                          <span className="text-sm sm:text-xl font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
                         )}
                       </div>
-                      <Link href={`/products/${product.slug}`} className="w-10 h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300">
-                        <ArrowRight className="w-5 h-5" />
+                      <Link href={`/products/${product.slug}`} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300">
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                       </Link>
                     </div>
                   </div>

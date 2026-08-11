@@ -159,7 +159,7 @@ export default async function ProductsPage({
 
             {/* Grid */}
             {products && products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 {products.map((product) => {
                   const primaryImage = product.product_images?.find((img: any) => img.is_primary)?.url 
                     || product.product_images?.[0]?.url 
@@ -171,7 +171,7 @@ export default async function ProductsPage({
                         <img 
                           src={primaryImage} 
                           alt={product.name} 
-                          className="object-cover w-full h-full mix-blend-multiply p-4 transition-transform group-hover:scale-105"
+                          className="object-cover w-full h-full mix-blend-multiply p-2 sm:p-4 transition-transform group-hover:scale-105"
                         />
                         {product.sale_price && (
                           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -179,30 +179,32 @@ export default async function ProductsPage({
                           </span>
                         )}
                       </Link>
-                      <div className="p-5">
-                        <div className="text-xs text-primary-600 font-medium mb-1">
-                          {(product.categories as any)?.name}
+                      <div className="p-3 sm:p-5 flex flex-col justify-between h-full border-t border-slate-50">
+                        <div>
+                          <div className="text-[10px] sm:text-xs text-primary-600 font-medium mb-1 line-clamp-1">
+                            {(product.categories as any)?.name}
+                          </div>
+                          <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-base leading-tight">
+                            <Link href={`/products/${product.slug}`} className="hover:text-primary-600">
+                              {product.name}
+                            </Link>
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 mb-3 sm:mb-4 h-8 sm:h-10 hidden sm:block">
+                            {product.short_description}
+                          </p>
                         </div>
-                        <h3 className="font-bold text-slate-900 mb-1 line-clamp-1">
-                          <Link href={`/products/${product.slug}`} className="hover:text-primary-600">
-                            {product.name}
-                          </Link>
-                        </h3>
-                        <p className="text-sm text-slate-500 line-clamp-2 mb-4 h-10">
-                          {product.short_description}
-                        </p>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mt-auto">
                           <div>
                             {product.sale_price ? (
                               <div className="flex flex-col">
-                                <span className="text-sm text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
-                                <span className="text-lg font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
+                                <span className="text-[10px] sm:text-sm text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                                <span className="text-sm sm:text-lg font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
                               </div>
                             ) : (
-                              <span className="text-lg font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
+                              <span className="text-sm sm:text-lg font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
                             )}
                           </div>
-                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 p-2 rounded-lg transition-colors font-medium text-sm">
+                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm">
                             View
                           </Link>
                         </div>
