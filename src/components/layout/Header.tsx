@@ -30,7 +30,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 border-b border-slate-200/60 shadow-sm supports-[backdrop-filter]:bg-white/60 transition-all duration-300">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-primary-700 via-primary-600 to-primary-700 text-white px-4 py-2 text-center text-sm font-medium tracking-wide">
+      <div className="bg-gradient-to-r from-primary-700 via-primary-600 to-primary-700 text-white px-4 py-2 text-center text-xs sm:text-sm font-medium tracking-wide">
         <Link href="/become-a-member" className="hover:text-primary-50 transition-colors inline-block hover:scale-105 duration-200">
           BECOME A BF SUMA MEMBER - LEARN MORE
         </Link>

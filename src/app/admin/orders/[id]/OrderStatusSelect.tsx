@@ -33,7 +33,7 @@ export default function OrderStatusSelect({
         value={status}
         onChange={handleChange}
         disabled={isPending}
-        className="appearance-none bg-white border border-slate-200 text-slate-700 py-2 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-sm disabled:opacity-50 cursor-pointer"
+        className="w-full sm:w-auto appearance-none bg-white border border-slate-200 text-slate-700 py-2 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-sm disabled:opacity-50 cursor-pointer"
       >
         <option value="pending">Pending</option>
         <option value="processing">Processing</option>

@@ -38,29 +38,31 @@ export default async function OrderDetailsPage({
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/admin/orders" className="p-2 hover:bg-slate-200 bg-slate-100 rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-slate-700" />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-            Order #{order.order_number}
-            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-              order.status === 'pending' ? 'bg-amber-100 text-amber-800' :
-              order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-              order.status === 'completed' ? 'bg-green-100 text-green-800' :
-              order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-              'bg-slate-200 text-slate-800'
-            }`}>
-              {order.status.toUpperCase()}
-            </span>
-          </h1>
-          <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
-            <Clock className="w-4 h-4" /> {new Date(order.created_at).toLocaleString()}
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <Link href="/admin/orders" className="p-2 hover:bg-slate-200 bg-slate-100 rounded-full transition-colors">
+            <ArrowLeft className="w-5 h-5 text-slate-700" />
+          </Link>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight flex flex-wrap items-center gap-2 sm:gap-3">
+              Order #{order.order_number}
+              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                order.status === 'pending' ? 'bg-amber-100 text-amber-800' :
+                order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                'bg-slate-200 text-slate-800'
+              }`}>
+                {order.status.toUpperCase()}
+              </span>
+            </h1>
+            <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
+              <Clock className="w-4 h-4" /> {new Date(order.created_at).toLocaleString()}
+            </p>
+          </div>
         </div>
         
-        <div className="ml-auto flex items-center gap-3">
+        <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-3">
           <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
         </div>
       </div>
