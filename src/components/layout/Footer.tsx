@@ -52,9 +52,12 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-slate-400">
               <li>Meru, Kenya</li>
               <li>Delivery Nationwide via G4S</li>
-              <li className="pt-2">
-                <a href="https://wa.me/254111802597" target="_blank" rel="noopener noreferrer" className="inline-block bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-500 transition-colors font-medium">
-                  Chat on WhatsApp
+              <li className="pt-2 flex flex-col gap-2">
+                <a href="https://wa.me/254733949512?text=Hello!%20I'm%20interested%20in%20BF%20Suma%20products." target="_blank" rel="noopener noreferrer" className="inline-block bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-500 transition-colors font-medium text-center">
+                  Chat with Agent 1
+                </a>
+                <a href="https://wa.me/254714972502?text=Hello!%20I'm%20interested%20in%20BF%20Suma%20products." target="_blank" rel="noopener noreferrer" className="inline-block bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-500 transition-colors font-medium text-center">
+                  Chat with Agent 2
                 </a>
               </li>
             </ul>

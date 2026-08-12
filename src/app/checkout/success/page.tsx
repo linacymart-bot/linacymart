@@ -15,11 +15,12 @@ export default async function CheckoutSuccessPage({
   const shouldClear = params.clear === 'true';
 
   // WhatsApp integration for M-Pesa push / manual payment confirmation
-  const whatsappNumber = '254111802597'; // Actual business WhatsApp number
   const message = encodeURIComponent(
     `Hello BF Suma,\n\nI have just placed an order on the website.\n\n*Order Number:* ${orderNumber}\n*Total:* KSh ${Number(total).toLocaleString()}\n*Name:* ${name}\n*Phone:* ${phone}\n\nPlease initiate the M-Pesa STK push for my payment.`
   );
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+  
+  const whatsappUrlAgent1 = `https://wa.me/254733949512?text=${message}`;
+  const whatsappUrlAgent2 = `https://wa.me/254714972502?text=${message}`;
 
   if (!orderNumber) {
     return (
@@ -64,18 +65,29 @@ export default async function CheckoutSuccessPage({
         <div className="space-y-4">
           <h3 className="font-bold text-slate-900">Next Step: Complete Payment</h3>
           <p className="text-sm text-slate-600 mb-4">
-            To complete your order, please click the button below to send us your order details via WhatsApp. We will trigger an M-Pesa STK push to your phone number ({phone}) immediately.
+            To complete your order, please select one of our agents below to send us your order details via WhatsApp. We will trigger an M-Pesa STK push to your phone number ({phone}) immediately.
           </p>
           
-          <a 
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-colors w-full text-lg shadow-sm"
-          >
-            <MessageCircle className="w-6 h-6" />
-            Pay via WhatsApp
-          </a>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a 
+              href={whatsappUrlAgent1}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-colors w-full text-lg shadow-sm"
+            >
+              <MessageCircle className="w-6 h-6" />
+              Agent 1
+            </a>
+            <a 
+              href={whatsappUrlAgent2}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-colors w-full text-lg shadow-sm"
+            >
+              <MessageCircle className="w-6 h-6" />
+              Agent 2
+            </a>
+          </div>
 
           <Link href="/products" className="block text-slate-500 hover:text-primary-600 font-medium text-sm mt-6">
             Continue Shopping
