@@ -41,12 +41,12 @@ export default function BecomeMemberPage() {
       {/* Stats/Social Proof */}
       <section className="border-b border-slate-200 bg-white">
         <div className="container-custom py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-100">
-            <div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 text-center md:divide-x divide-slate-100">
+            <div className="mb-4 md:mb-0">
               <div className="text-3xl font-extrabold text-slate-900 mb-1">10M+</div>
               <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">Global Distributors</div>
             </div>
-            <div>
+            <div className="mb-4 md:mb-0">
               <div className="text-3xl font-extrabold text-slate-900 mb-1">30+</div>
               <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">Countries</div>
             </div>
@@ -159,11 +159,11 @@ export default function BecomeMemberPage() {
           <div className="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-slate-200 flex flex-col xl:flex-row">
             
             {/* Left Info Panel */}
-            <div className="xl:w-5/12 bg-primary-900 p-12 lg:p-16 text-white flex flex-col justify-between relative overflow-hidden">
+            <div className="xl:w-5/12 bg-primary-900 p-8 sm:p-12 lg:p-16 text-white flex flex-col justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-primary-600 rounded-full blur-3xl opacity-20"></div>
               <div className="relative z-10">
                 <span className="inline-block px-3 py-1 bg-primary-800 text-primary-200 text-sm font-bold rounded-full mb-6">Take Action</span>
-                <h3 className="text-4xl font-extrabold mb-6 tracking-tight">Ready to Start?</h3>
+                <h3 className="text-3xl sm:text-4xl font-extrabold mb-6 tracking-tight">Ready to Start?</h3>
                 <p className="text-primary-100 mb-10 text-lg leading-relaxed">
                   Registering as a BF Suma distributor is your first step towards financial freedom. Fill out this form and our leadership team will contact you to finalize your registration and provide your starter kit.
                 </p>
@@ -200,7 +200,7 @@ export default function BecomeMemberPage() {
             </div>
 
             {/* Right Form Panel */}
-            <div className="xl:w-7/12 p-12 lg:p-16 bg-white relative">
+            <div className="xl:w-7/12 p-8 sm:p-12 lg:p-16 bg-white relative">
               <div className="max-w-xl mx-auto">
                 <BecomeMemberForm />
               </div>

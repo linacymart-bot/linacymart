@@ -89,28 +89,28 @@ export default async function ProductsPage({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
+          {/* Categories Sidebar/Top Bar */}
           <aside className="w-full lg:w-64 flex-shrink-0">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 sticky top-24">
-              <div className="flex items-center gap-2 font-bold text-lg mb-6 border-b border-slate-100 pb-4 text-slate-900">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 lg:p-6 sticky top-24">
+              <div className="hidden lg:flex items-center gap-2 font-bold text-lg mb-6 border-b border-slate-100 pb-4 text-slate-900">
                 <Filter className="w-5 h-5" />
                 Categories
               </div>
               
-              <ul className="space-y-3">
-                <li>
+              <ul className="flex flex-row lg:flex-col gap-3 lg:gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0">
+                <li className="flex-shrink-0 lg:flex-shrink">
                   <Link 
                     href="/products?category=all"
-                    className={`block text-sm font-medium transition-colors ${!categoryParam || categoryParam === 'all' ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
+                    className={`block text-sm font-medium transition-colors whitespace-nowrap lg:whitespace-normal px-4 py-2 lg:px-0 lg:py-0 rounded-full lg:rounded-none ${!categoryParam || categoryParam === 'all' ? 'bg-primary-50 lg:bg-transparent text-primary-700 lg:text-primary-600' : 'bg-slate-50 lg:bg-transparent text-slate-600 hover:text-primary-600'}`}
                   >
                     All Products
                   </Link>
                 </li>
                 {categories?.map((cat) => (
-                  <li key={cat.id}>
+                  <li key={cat.id} className="flex-shrink-0 lg:flex-shrink">
                     <Link 
                       href={`/products?category=${cat.slug}${sortParam ? `&sort=${sortParam}` : ''}`}
-                      className={`block text-sm font-medium transition-colors ${categoryParam === cat.slug ? 'text-primary-600' : 'text-slate-600 hover:text-primary-600'}`}
+                      className={`block text-sm font-medium transition-colors whitespace-nowrap lg:whitespace-normal px-4 py-2 lg:px-0 lg:py-0 rounded-full lg:rounded-none ${categoryParam === cat.slug ? 'bg-primary-50 lg:bg-transparent text-primary-700 lg:text-primary-600' : 'bg-slate-50 lg:bg-transparent text-slate-600 hover:text-primary-600'}`}
                     >
                       {cat.name}
                     </Link>

@@ -34,11 +34,11 @@ export default async function CheckoutSuccessPage({
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 py-12 px-4">
+    <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 py-8 sm:py-12 px-4">
       <CartClearer shouldClear={shouldClear} />
-      <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100 text-center max-w-xl w-full">
+      <div className="bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100 text-center max-w-xl w-full">
         <div className="flex justify-center mb-6">
-          <CheckCircle2 className="w-20 h-20 text-green-500" />
+          <CheckCircle2 className="w-16 h-16 sm:w-20 sm:h-20 text-green-500" />
         </div>
         
         <h1 className="text-3xl font-bold text-slate-900 mb-2">Order Confirmed!</h1>

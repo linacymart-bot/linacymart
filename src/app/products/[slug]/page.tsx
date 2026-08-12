@@ -72,13 +72,13 @@ export default async function ProductPage({
           <div className="flex flex-col lg:flex-row">
             
             {/* Image Gallery Column */}
-            <div className="w-full lg:w-1/2 bg-slate-50/50 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-200 relative">
+            <div className="w-full lg:w-1/2 bg-slate-50/50 p-4 sm:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-200 relative">
               {product.sale_price && (
-                <div className="absolute top-6 left-6 bg-red-500 text-white font-bold px-4 py-2 rounded-xl shadow-sm z-10 text-sm tracking-wider">
+                <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-red-500 text-white font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-sm z-10 text-xs sm:text-sm tracking-wider">
                   SALE
                 </div>
               )}
-              <div className="relative aspect-square w-full max-w-md mx-auto bg-white rounded-3xl shadow-sm border border-slate-100 p-8 group">
+              <div className="relative aspect-square w-full max-w-md mx-auto bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8 group">
                 <img 
                   src={primaryImage} 
                   alt={product.name} 
@@ -88,7 +88,7 @@ export default async function ProductPage({
             </div>
 
             {/* Product Summary Column */}
-            <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
+            <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
               {category && (
                 <Link 
                   href={`/products?category=${category.slug}`}
@@ -98,41 +98,41 @@ export default async function ProductPage({
                 </Link>
               )}
               
-              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 mb-4 sm:mb-6 leading-tight tracking-tight">
                 {product.name}
               </h1>
 
-              <div className="flex items-center gap-4 mb-8 pb-8 border-b border-slate-100">
+              <div className="flex items-center gap-4 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-slate-100">
                 <div className="flex items-center gap-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-6 h-6 ${i < Math.round(Number(averageRating)) ? 'fill-current' : 'text-slate-200'}`} />
+                    <Star key={i} className={`w-5 h-5 sm:w-6 sm:h-6 ${i < Math.round(Number(averageRating)) ? 'fill-current' : 'text-slate-200'}`} />
                   ))}
                 </div>
-                <a href="#reviews" className="text-base font-medium text-slate-500 hover:text-primary-600 transition-colors">
+                <a href="#reviews" className="text-sm sm:text-base font-medium text-slate-500 hover:text-primary-600 transition-colors">
                   {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
                 </a>
               </div>
 
-              <div className="mb-10">
+              <div className="mb-8 sm:mb-10">
                 {product.sale_price ? (
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-3">
-                    <span className="text-5xl font-extrabold text-slate-900 tracking-tight">KSh {Number(product.sale_price).toLocaleString()}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
+                    <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">KSh {Number(product.sale_price).toLocaleString()}</span>
                     <div className="flex items-center gap-3 pb-1">
-                      <span className="text-2xl text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
-                      <span className="text-sm font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                      <span className="text-xl sm:text-2xl text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                      <span className="text-xs sm:text-sm font-bold text-red-600 bg-red-50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-red-100">
                         Save KSh {(Number(product.price) - Number(product.sale_price)).toLocaleString()}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <span className="text-5xl font-extrabold text-slate-900 tracking-tight">KSh {Number(product.price).toLocaleString()}</span>
+                  <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">KSh {Number(product.price).toLocaleString()}</span>
                 )}
-                <p className="text-sm text-slate-500 mt-4 font-medium flex items-center gap-2">
+                <p className="text-xs sm:text-sm text-slate-500 mt-4 font-medium flex items-center gap-2">
                   <Truck className="w-4 h-4" /> Delivery fees calculated at checkout. Ships via G4S.
                 </p>
               </div>
 
-              <div className="bg-slate-50/80 p-8 rounded-3xl border border-slate-200/60 mb-8 backdrop-blur-sm shadow-sm">
+              <div className="bg-slate-50/80 p-6 sm:p-8 rounded-3xl border border-slate-200/60 mb-8 backdrop-blur-sm shadow-sm">
                 <AddToCartButton product={{
                   id: product.id,
                   name: product.name,
@@ -171,7 +171,7 @@ export default async function ProductPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           {/* Main Content (Left 2/3) */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 lg:p-12">
+            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 lg:p-12">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
                 <Info className="text-primary-500 w-6 h-6" /> Product Details
               </h2>
@@ -181,7 +181,7 @@ export default async function ProductPage({
             </div>
 
             {product.short_description && (
-              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 lg:p-12">
+              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 lg:p-12">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
                   <Star className="text-primary-500 w-6 h-6" /> Key Benefits
                 </h2>
@@ -192,7 +192,7 @@ export default async function ProductPage({
             )}
 
             {product.ingredients && (
-              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 lg:p-12">
+              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 lg:p-12">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
                   <ListChecks className="text-primary-500 w-6 h-6" /> Active Ingredients
                 </h2>
@@ -238,10 +238,10 @@ export default async function ProductPage({
         </div>
 
         {/* Reviews Section */}
-        <div id="reviews" className="mt-12 bg-white rounded-3xl shadow-sm border border-slate-200 p-8 lg:p-12">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 border-b border-slate-100 pb-8">
+        <div id="reviews" className="mt-12 bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 lg:p-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6 mb-8 sm:mb-10 border-b border-slate-100 pb-6 sm:pb-8">
             <div>
-              <h2 className="text-3xl font-bold text-slate-900 flex items-center gap-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-4">
                 Customer Reviews
                 <span className="bg-primary-100 text-primary-700 text-lg font-bold py-1 px-4 rounded-full">{averageRating} / 5.0</span>
               </h2>
