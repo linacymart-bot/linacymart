@@ -123,15 +123,15 @@ export default async function ProductsPage({
           {/* Product Grid */}
           <main className="flex-grow">
             {/* Sort Bar */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="text-sm text-slate-600 font-medium">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="text-sm text-slate-600 font-medium w-full sm:w-auto text-left">
                 Showing <span className="text-slate-900 font-bold">{products?.length || 0}</span> products
               </div>
               
-              <div className="flex items-center gap-2">
-                <ArrowDownUp className="w-4 h-4 text-slate-500" />
-                <span className="text-sm text-slate-700 font-medium mr-2">Sort by:</span>
-                <div className="flex flex-wrap gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto overflow-hidden">
+                <ArrowDownUp className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                <span className="text-sm text-slate-700 font-medium flex-shrink-0 mr-1 sm:mr-2">Sort by:</span>
+                <div className="flex overflow-x-auto gap-2 pb-2 sm:pb-0 scrollbar-hide flex-grow -mx-2 px-2 sm:mx-0 sm:px-0">
                   {[
                     { label: 'Popular', value: 'popular' },
                     { label: 'Newest', value: 'newest' },
@@ -143,7 +143,7 @@ export default async function ProductsPage({
                       <Link
                         key={option.value}
                         href={`/products?${categoryParam ? `category=${categoryParam}&` : ''}sort=${option.value}`}
-                        className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors border ${
+                        className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors border whitespace-nowrap flex-shrink-0 ${
                           isActive 
                             ? 'bg-primary-50 text-primary-700 border-primary-200' 
                             : 'bg-white text-slate-600 border-slate-200 hover:border-primary-300'
@@ -166,8 +166,8 @@ export default async function ProductsPage({
                     || '/placeholder.svg';
                     
                   return (
-                    <div key={product.id} className="card group hover:shadow-md transition-shadow">
-                      <Link href={`/products/${product.slug}`} className="block relative aspect-square bg-slate-50">
+                    <div key={product.id} className="card group hover:shadow-md transition-shadow flex flex-col h-full">
+                      <Link href={`/products/${product.slug}`} className="block relative aspect-square bg-slate-50 flex-shrink-0">
                         <img 
                           src={primaryImage} 
                           alt={product.name} 
@@ -179,8 +179,8 @@ export default async function ProductsPage({
                           </span>
                         )}
                       </Link>
-                      <div className="p-3 sm:p-5 flex flex-col justify-between h-full border-t border-slate-50">
-                        <div>
+                      <div className="p-3 sm:p-5 flex flex-col flex-grow border-t border-slate-50">
+                        <div className="flex-grow">
                           <div className="text-[10px] sm:text-xs text-primary-600 font-medium mb-1 line-clamp-1">
                             {(product.categories as any)?.name}
                           </div>
@@ -193,7 +193,7 @@ export default async function ProductsPage({
                             {product.short_description}
                           </p>
                         </div>
-                        <div className="flex items-center justify-between mt-auto">
+                        <div className="flex items-end justify-between mt-auto pt-2">
                           <div>
                             {product.sale_price ? (
                               <div className="flex flex-col">
@@ -204,7 +204,7 @@ export default async function ProductsPage({
                               <span className="text-sm sm:text-lg font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
                             )}
                           </div>
-                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm">
+                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ml-2">
                             View
                           </Link>
                         </div>

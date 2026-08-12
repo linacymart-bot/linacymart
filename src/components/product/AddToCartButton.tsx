@@ -12,9 +12,10 @@ interface AddToCartButtonProps {
     price: number;
     image: string;
   };
+  isSticky?: boolean;
 }
 
-export function AddToCartButton({ product }: AddToCartButtonProps) {
+export function AddToCartButton({ product, isSticky = false }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1);
   const addItem = useCartStore((state) => state.addItem);
 
@@ -26,7 +27,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mt-8">
+    <div className={`flex ${isSticky ? 'flex-row w-full' : 'flex-col sm:flex-row mt-6 sm:mt-8'} gap-2 sm:gap-4`}>
       {/* Quantity Selector */}
       <div className="flex items-center border-2 border-slate-200 rounded-xl bg-white h-14">
         <button

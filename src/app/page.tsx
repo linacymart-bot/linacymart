@@ -108,8 +108,8 @@ export default async function Home() {
                 || '/placeholder.svg';
                 
               return (
-                <StaggerItem key={product.id} className="card group relative">
-                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-3 sm:p-6 overflow-hidden">
+                <StaggerItem key={product.id} className="card group relative flex flex-col h-full">
+                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-3 sm:p-6 overflow-hidden flex-shrink-0">
                     <div className="absolute inset-0 bg-primary-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                     <img 
                       src={primaryImage} 
@@ -122,8 +122,8 @@ export default async function Home() {
                       </span>
                     )}
                   </Link>
-                  <div className="p-3 sm:p-6 border-t border-slate-50 flex flex-col justify-between h-full">
-                    <div>
+                  <div className="p-3 sm:p-6 border-t border-slate-50 flex flex-col flex-grow">
+                    <div className="flex-grow">
                       <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-lg leading-tight">
                         <Link href={`/products/${product.slug}`} className="hover:text-primary-700 transition-colors">
                           {product.name}
@@ -133,7 +133,7 @@ export default async function Home() {
                         {product.short_description}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-end justify-between mt-auto pt-2">
                       <div>
                         {product.sale_price ? (
                           <div className="flex flex-col">
@@ -144,7 +144,7 @@ export default async function Home() {
                           <span className="text-sm sm:text-xl font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
                         )}
                       </div>
-                      <Link href={`/products/${product.slug}`} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300">
+                      <Link href={`/products/${product.slug}`} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300 flex-shrink-0 ml-2">
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                       </Link>
                     </div>

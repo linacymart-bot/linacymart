@@ -72,33 +72,33 @@ export default function BecomeMemberPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
-              <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
-                <DollarSign className="w-8 h-8 text-primary-600" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-slate-50 p-6 sm:p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
+              <div className="bg-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
+                <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Retail Profits</h3>
-              <p className="text-slate-600 leading-relaxed mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">Retail Profits</h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                 As a registered distributor, you purchase premium health products at wholesale prices (distributor rate) and sell them at the recommended retail price, earning immediate cash profit up to 20-30%.
               </p>
             </div>
             
-            <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
-              <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
-                <TrendingUp className="w-8 h-8 text-primary-600" />
+            <div className="bg-slate-50 p-6 sm:p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
+              <div className="bg-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
+                <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Performance Bonus</h3>
-              <p className="text-slate-600 leading-relaxed mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">Performance Bonus</h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                 Earn monthly cash bonuses based on the total Point Value (PV) of products sold by you and your entire team. As your volume grows, your bonus percentage increases dramatically.
               </p>
             </div>
 
-            <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
-              <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
-                <Users className="w-8 h-8 text-primary-600" />
+            <div className="bg-slate-50 p-6 sm:p-10 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-xl transition-all group">
+              <div className="bg-white w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary-50 transition-all">
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Leadership Bonus</h3>
-              <p className="text-slate-600 leading-relaxed mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">Leadership Bonus</h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                 Recruit, train, and mentor others to become leaders. When your downline distributors achieve leadership ranks, you earn lucrative overriding bonuses on their entire organizational volume.
               </p>
             </div>
