@@ -109,12 +109,12 @@ export default async function Home() {
                 
               return (
                 <StaggerItem key={product.id} className="card group relative flex flex-col h-full">
-                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-3 sm:p-6 overflow-hidden flex-shrink-0">
+                  <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] bg-white p-4 sm:p-6 overflow-hidden flex-shrink-0">
                     <div className="absolute inset-0 bg-primary-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                     <img 
                       src={primaryImage} 
                       alt={product.name} 
-                      className="object-contain w-full h-full relative z-10 transition-transform duration-700 group-hover:scale-110 drop-shadow-sm"
+                      className="object-contain w-full h-full relative z-10 transition-transform duration-700 group-hover:scale-110 drop-shadow-sm p-2"
                     />
                     {product.sale_price && (
                       <span className="absolute top-4 left-4 bg-secondary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full z-20 shadow-sm">
@@ -124,7 +124,7 @@ export default async function Home() {
                   </Link>
                   <div className="p-3 sm:p-6 border-t border-slate-50 flex flex-col flex-grow">
                     <div className="flex-grow">
-                      <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-lg leading-tight">
+                      <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-lg leading-tight min-h-[2.5rem] sm:min-h-[3.5rem]">
                         <Link href={`/products/${product.slug}`} className="hover:text-primary-700 transition-colors">
                           {product.name}
                         </Link>
@@ -133,15 +133,15 @@ export default async function Home() {
                         {product.short_description}
                       </p>
                     </div>
-                    <div className="flex items-end justify-between mt-auto pt-2">
+                    <div className="flex items-end justify-between mt-auto pt-2 min-h-[2.5rem] sm:min-h-[3rem]">
                       <div>
                         {product.sale_price ? (
                           <div className="flex flex-col">
                             <span className="text-[10px] sm:text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
-                            <span className="text-sm sm:text-xl font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
+                            <span className="text-sm sm:text-xl font-bold text-slate-900 leading-none">KSh {Number(product.sale_price).toLocaleString()}</span>
                           </div>
                         ) : (
-                          <span className="text-sm sm:text-xl font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
+                          <span className="text-sm sm:text-xl font-bold text-slate-900 leading-none">KSh {Number(product.price).toLocaleString()}</span>
                         )}
                       </div>
                       <Link href={`/products/${product.slug}`} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all duration-300 flex-shrink-0 ml-2">

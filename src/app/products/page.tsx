@@ -171,10 +171,10 @@ export default async function ProductsPage({
                         <img 
                           src={primaryImage} 
                           alt={product.name} 
-                          className="object-cover w-full h-full mix-blend-multiply p-2 sm:p-4 transition-transform group-hover:scale-105"
+                          className="object-contain w-full h-full mix-blend-multiply p-4 sm:p-6 transition-transform group-hover:scale-105"
                         />
                         {product.sale_price && (
-                          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
                             SALE
                           </span>
                         )}
@@ -184,7 +184,7 @@ export default async function ProductsPage({
                           <div className="text-[10px] sm:text-xs text-primary-600 font-medium mb-1 line-clamp-1">
                             {(product.categories as any)?.name}
                           </div>
-                          <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-base leading-tight">
+                          <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-base leading-tight min-h-[2.5rem] sm:min-h-[3rem]">
                             <Link href={`/products/${product.slug}`} className="hover:text-primary-600">
                               {product.name}
                             </Link>
@@ -193,18 +193,18 @@ export default async function ProductsPage({
                             {product.short_description}
                           </p>
                         </div>
-                        <div className="flex items-end justify-between mt-auto pt-2">
+                        <div className="flex items-end justify-between mt-auto pt-2 min-h-[2.5rem] sm:min-h-[3rem]">
                           <div>
                             {product.sale_price ? (
                               <div className="flex flex-col">
-                                <span className="text-[10px] sm:text-sm text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
-                                <span className="text-sm sm:text-lg font-bold text-slate-900">KSh {Number(product.sale_price).toLocaleString()}</span>
+                                <span className="text-[10px] sm:text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                                <span className="text-sm sm:text-lg font-bold text-slate-900 leading-none">KSh {Number(product.sale_price).toLocaleString()}</span>
                               </div>
                             ) : (
-                              <span className="text-sm sm:text-lg font-bold text-slate-900">KSh {Number(product.price).toLocaleString()}</span>
+                              <span className="text-sm sm:text-lg font-bold text-slate-900 leading-none">KSh {Number(product.price).toLocaleString()}</span>
                             )}
                           </div>
-                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ml-2">
+                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ml-2">
                             View
                           </Link>
                         </div>
