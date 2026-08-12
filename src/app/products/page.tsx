@@ -166,45 +166,52 @@ export default async function ProductsPage({
                     || '/placeholder.svg';
                     
                   return (
-                    <div key={product.id} className="card group hover:shadow-md transition-shadow flex flex-col h-full">
-                      <Link href={`/products/${product.slug}`} className="block relative aspect-square bg-slate-50 flex-shrink-0">
+                    <div key={product.id} className="card group hover:shadow-md transition-shadow bg-white overflow-hidden">
+                      <Link href={`/products/${product.slug}`} className="block relative aspect-square bg-slate-50 border-b border-slate-50">
                         <img 
                           src={primaryImage} 
                           alt={product.name} 
-                          className="object-contain w-full h-full mix-blend-multiply p-4 sm:p-6 transition-transform group-hover:scale-105"
+                          className="object-contain w-full h-full mix-blend-multiply p-3 sm:p-5 transition-transform group-hover:scale-105"
                         />
                         {product.sale_price && (
-                          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                          <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-red-500 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded shadow-sm">
                             SALE
                           </span>
                         )}
                       </Link>
-                      <div className="p-3 sm:p-5 flex flex-col flex-grow border-t border-slate-50">
-                        <div className="flex-grow">
-                          <div className="text-[10px] sm:text-xs text-primary-600 font-medium mb-1 line-clamp-1">
+                      <div className="p-3 sm:p-5">
+                        <div className="h-4 sm:h-5 mb-1 overflow-hidden">
+                          <div className="text-[10px] sm:text-xs text-primary-600 font-medium line-clamp-1">
                             {(product.categories as any)?.name}
                           </div>
-                          <h3 className="font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-2 text-sm sm:text-base leading-tight min-h-[2.5rem] sm:min-h-[3rem]">
+                        </div>
+                        
+                        <div className="h-10 sm:h-12 mb-2 sm:mb-4 overflow-hidden">
+                          <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight line-clamp-2">
                             <Link href={`/products/${product.slug}`} className="hover:text-primary-600">
                               {product.name}
                             </Link>
                           </h3>
-                          <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 mb-3 sm:mb-4 h-8 sm:h-10 hidden sm:block">
+                        </div>
+
+                        <div className="h-8 sm:h-10 mb-3 sm:mb-4 hidden sm:block overflow-hidden">
+                          <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
                             {product.short_description}
                           </p>
                         </div>
-                        <div className="flex items-end justify-between mt-auto pt-2 min-h-[2.5rem] sm:min-h-[3rem]">
-                          <div>
+
+                        <div className="flex items-center justify-between h-10 sm:h-12 border-t border-slate-50 pt-3">
+                          <div className="flex flex-col justify-center">
                             {product.sale_price ? (
-                              <div className="flex flex-col">
-                                <span className="text-[10px] sm:text-xs text-slate-400 line-through">KSh {Number(product.price).toLocaleString()}</span>
+                              <>
+                                <span className="text-[10px] sm:text-xs text-slate-400 line-through leading-none mb-0.5">KSh {Number(product.price).toLocaleString()}</span>
                                 <span className="text-sm sm:text-lg font-bold text-slate-900 leading-none">KSh {Number(product.sale_price).toLocaleString()}</span>
-                              </div>
+                              </>
                             ) : (
                               <span className="text-sm sm:text-lg font-bold text-slate-900 leading-none">KSh {Number(product.price).toLocaleString()}</span>
                             )}
                           </div>
-                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ml-2">
+                          <Link href={`/products/${product.slug}`} className="bg-primary-50 text-primary-700 hover:bg-primary-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ml-1">
                             View
                           </Link>
                         </div>
