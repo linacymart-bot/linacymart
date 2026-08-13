@@ -102,10 +102,11 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
         discountAmount = Math.min(discountAmount, subtotal);
         
         // Increment promo uses
-        await supabase.rpc('increment_promo_uses', { p_id: promoCodeId }).catch(() => {
+        const { error: rpcError } = await supabase.rpc('increment_promo_uses', { p_id: promoCodeId });
+        if (rpcError) {
           // Fallback if RPC doesn't exist
-          supabase.from('promo_codes').update({ uses: promo.uses + 1 }).eq('id', promoCodeId);
-        });
+          await supabase.from('promo_codes').update({ uses: promo.uses + 1 }).eq('id', promoCodeId);
+        }
       }
     }
 
