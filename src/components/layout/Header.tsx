@@ -24,6 +24,7 @@ export function Header() {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'All Products', href: '/products' },
+    { name: 'Health Blog', href: '/blog' },
     { name: 'Become a Member', href: '/become-a-member' },
   ];
 
