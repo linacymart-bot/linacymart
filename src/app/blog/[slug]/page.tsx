@@ -6,12 +6,13 @@ import { MarkdownRenderer } from './MarkdownRenderer';
 
 export const revalidate = 3600; // Revalidate every hour
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const supabase = await createClient();
   const { data: post } = await supabase
     .from('blog_posts')
     .select('title, content, cover_image')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single();
 
   if (!post) return { title: 'Not Found' };
@@ -25,13 +26,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: post } = await supabase
     .from('blog_posts')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('published', true)
     .single();
 
@@ -79,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </Link>
 
         <article className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-          {post.cover_image && (
+          {post.cover_image && (post.cover_image.startsWith('http') || post.cover_image.startsWith('/')) && (
             <div className="w-full aspect-[2/1] relative">
               <img 
                 src={post.cover_image} 

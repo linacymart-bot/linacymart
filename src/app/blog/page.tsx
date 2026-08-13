@@ -43,16 +43,16 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group flex flex-col bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300"
               >
-                <div className="aspect-[16/9] w-full bg-slate-100 overflow-hidden relative">
-                  {post.cover_image ? (
+                <div className="aspect-[16/9] w-full bg-slate-100 overflow-hidden relative flex items-center justify-center">
+                  {post.cover_image && (post.cover_image.startsWith('http') || post.cover_image.startsWith('/')) ? (
                     <img 
                       src={post.cover_image} 
                       alt={post.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-slate-300">
-                      Linacy
+                    <div className="text-slate-400 font-medium text-lg">
+                      BF Suma
                     </div>
                   )}
                 </div>
