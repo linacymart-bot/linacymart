@@ -75,7 +75,8 @@ export default async function ProductPage({
     || '/placeholder.svg';
 
   const category = Array.isArray(product.category) ? product.category[0] : product.category;
-  const reviews = product.reviews || [];
+  // Only show approved (verified) reviews
+  const reviews = (product.reviews || []).filter((r: any) => r.is_verified);
   
   // Calculate average rating
   const averageRating = reviews.length > 0 
