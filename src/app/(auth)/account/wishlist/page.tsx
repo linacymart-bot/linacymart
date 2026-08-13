@@ -60,9 +60,6 @@ export default async function WishlistPage() {
               <Link href="/account/wishlist" className="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-700 rounded-lg font-medium">
                 <Heart className="w-5 h-5" /> Wishlist
               </Link>
-              <Link href="/account/settings" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">
-                <Settings className="w-5 h-5" /> Settings
-              </Link>
               
               <form action="/actions/customer-auth" method="POST" className="mt-4 border-t border-slate-200 pt-4">
                 <button formAction={async () => {

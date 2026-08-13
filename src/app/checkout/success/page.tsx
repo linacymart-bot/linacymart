@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { CheckCircle2, MessageCircle } from 'lucide-react';
 import { CartClearer } from '@/components/checkout/CartClearer';
 
+import { createClient } from '@/utils/supabase/server';
+
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
@@ -9,18 +11,7 @@ export default async function CheckoutSuccessPage({
 }) {
   const params = await searchParams;
   const orderNumber = params.orderNumber as string;
-  const total = params.total as string;
-  const phone = params.phone as string;
-  const name = params.name as string;
   const shouldClear = params.clear === 'true';
-
-  // WhatsApp integration for M-Pesa push / manual payment confirmation
-  const message = encodeURIComponent(
-    `Hello BF Suma,\n\nI have just placed an order on the website.\n\n*Order Number:* ${orderNumber}\n*Total:* KSh ${Number(total).toLocaleString()}\n*Name:* ${name}\n*Phone:* ${phone}\n\nPlease initiate the M-Pesa STK push for my payment.`
-  );
-  
-  const whatsappUrlAgent1 = `https://wa.me/254733949512?text=${message}`;
-  const whatsappUrlAgent2 = `https://wa.me/254714972502?text=${message}`;
 
   if (!orderNumber) {
     return (
@@ -34,6 +25,44 @@ export default async function CheckoutSuccessPage({
     );
   }
 
+  const supabase = await createClient();
+  const { data: order } = await supabase
+    .from('orders')
+    .select(`
+      *,
+      order_items (
+        quantity,
+        price,
+        product_name
+      )
+    `)
+    .eq('order_number', orderNumber)
+    .single();
+
+  if (!order) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-center max-w-md">
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">Order Not Found</h1>
+          <p className="text-slate-500 mb-6">We couldn't find order {orderNumber}.</p>
+          <Link href="/" className="btn-primary">Return Home</Link>
+        </div>
+      </div>
+    );
+  }
+
+  const itemsList = order.order_items.map((item: any) => 
+    `- ${item.quantity}x ${item.product_name} (KSh ${Number(item.price).toLocaleString()})`
+  ).join('\n');
+
+  // WhatsApp integration for M-Pesa push / manual payment confirmation
+  const message = encodeURIComponent(
+    `Hello BF Suma,\n\nI have just placed an order on the website.\n\n*Order Number:* ${order.order_number}\n*Total:* KSh ${Number(order.total).toLocaleString()}\n\n*Customer Details:*\n*Name:* ${order.customer_name}\n*Phone:* ${order.customer_phone}\n*County:* ${order.delivery_county}\n*Address:* ${order.delivery_address}\n\n*Items ordered:*\n${itemsList}\n\nPlease initiate the M-Pesa STK push for my payment.`
+  );
+  
+  const whatsappUrlAgent1 = `https://wa.me/254733949512?text=${message}`;
+  const whatsappUrlAgent2 = `https://wa.me/254714972502?text=${message}`;
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 py-8 sm:py-12 px-4">
       <CartClearer shouldClear={shouldClear} />
@@ -44,7 +73,7 @@ export default async function CheckoutSuccessPage({
         
         <h1 className="text-3xl font-bold text-slate-900 mb-2">Order Confirmed!</h1>
         <p className="text-slate-500 text-lg mb-8">
-          Thank you for your purchase, {name || 'valued customer'}. Your order has been received and is being processed.
+          Thank you for your purchase, {order.customer_name || 'valued customer'}. Your order has been received and is being processed.
         </p>
 
         <div className="bg-slate-50 rounded-xl p-6 mb-8 text-left border border-slate-200">
@@ -54,7 +83,7 @@ export default async function CheckoutSuccessPage({
           </div>
           <div className="flex justify-between mb-3 border-b border-slate-200 pb-3">
             <span className="text-slate-500">Total Amount</span>
-            <span className="font-bold text-primary-600 text-lg">KSh {Number(total).toLocaleString()}</span>
+            <span className="font-bold text-primary-600 text-lg">KSh {Number(order.total).toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">Payment Status</span>
@@ -65,7 +94,7 @@ export default async function CheckoutSuccessPage({
         <div className="space-y-4">
           <h3 className="font-bold text-slate-900">Next Step: Complete Payment</h3>
           <p className="text-sm text-slate-600 mb-4">
-            To complete your order, please select one of our agents below to send us your order details via WhatsApp. We will trigger an M-Pesa STK push to your phone number ({phone}) immediately.
+            To complete your order, please select one of our agents below to send us your order details via WhatsApp. We will trigger an M-Pesa STK push to your phone number ({order.customer_phone}) immediately.
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

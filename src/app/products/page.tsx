@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { Filter, ArrowDownUp } from 'lucide-react';
 import { ProductFilters } from './ProductFilters';
-import { WishlistButton } from '@/components/products/WishlistButton';
 import { ProductCard } from '@/components/products/ProductCard';
 
 export const revalidate = 60; // Revalidate every minute

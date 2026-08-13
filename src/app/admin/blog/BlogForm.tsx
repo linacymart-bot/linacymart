@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { createBlogPost, updateBlogPost, deleteBlogPost } from '@/app/actions/admin-blog';
 import { Save, ArrowLeft, Trash2, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { ImageUploader } from '@/components/admin/ImageUploader';
 
 export function BlogForm({ post }: { post?: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState(post?.cover_image || '');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -156,14 +158,13 @@ export function BlogForm({ post }: { post?: any }) {
             </div>
             
             <div>
-              <label htmlFor="cover_image" className="block text-sm font-medium text-slate-700 mb-1">Image URL</label>
-              <input
-                type="url"
-                id="cover_image"
-                name="cover_image"
-                defaultValue={post?.cover_image}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:bg-white transition-colors"
-                placeholder="https://example.com/image.jpg"
+              <label className="block text-sm font-medium text-slate-700 mb-2">Upload or URL</label>
+              <input type="hidden" name="cover_image" value={coverImage} />
+              <ImageUploader 
+                value={coverImage} 
+                onChange={setCoverImage} 
+                bucket="images" 
+                folder="blog-covers"
               />
             </div>
           </div>

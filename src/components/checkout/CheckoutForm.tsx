@@ -95,13 +95,21 @@ export function CheckoutForm({
 
   useEffect(() => {
     setMounted(true);
-    // Redirect if cart is empty
-    if (items.length === 0) {
+  }, []);
+
+  useEffect(() => {
+    if (mounted && items.length === 0) {
       router.push('/products');
     }
-  }, [items, router]);
+  }, [items, router, mounted]);
 
-  if (!mounted || items.length === 0) return null;
+  if (!mounted || items.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-24">
+        <Loader2 className="w-8 h-8 text-primary-600 animate-spin" />
+      </div>
+    );
+  }
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsSubmitting(true);

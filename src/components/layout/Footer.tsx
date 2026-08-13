@@ -67,10 +67,10 @@ export function Footer() {
         
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
           <p>&copy; {currentYear} BF Suma Independent Distributor. All rights reserved.</p>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <span className="text-slate-600 cursor-not-allowed">Privacy Policy (Coming Soon)</span>
-            <span className="text-slate-600 cursor-not-allowed">Terms of Service (Coming Soon)</span>
-          </div>
+          <ul className="flex space-x-4 mt-4 md:mt-0 list-none">
+            <li><Link href="/privacy" className="text-sm text-slate-400 hover:text-white transition-colors">Privacy Policy</Link></li>
+            <li><Link href="/terms" className="text-sm text-slate-400 hover:text-white transition-colors">Terms of Service</Link></li>
+          </ul>
         </div>
       </div>
     </footer>

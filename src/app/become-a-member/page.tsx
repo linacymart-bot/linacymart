@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { TrendingUp, Award, Users, DollarSign, CheckCircle2, ChevronRight, Globe2, HeartHandshake, Zap, Target } from "lucide-react";
 import { BecomeMemberForm } from "@/components/forms/BecomeMemberForm";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Become a Member | BF Suma Kenya",

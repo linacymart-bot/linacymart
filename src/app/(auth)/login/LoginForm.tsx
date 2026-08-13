@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { loginCustomer } from '@/app/actions/customer-auth';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,9 +78,9 @@ export function LoginForm() {
         </div>
 
         <div className="text-sm">
-          <a href="#" className="font-medium text-primary-600 hover:text-primary-500">
+          <Link href="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
             Forgot your password?
-          </a>
+          </Link>
         </div>
       </div>
 

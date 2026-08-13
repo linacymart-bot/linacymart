@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createProduct, updateProduct } from '@/app/actions/admin-products';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { ImageUploader } from '@/components/admin/ImageUploader';
 
 export default function ProductForm({ 
   initialData, 
@@ -16,6 +17,7 @@ export default function ProductForm({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState(initialData?.product_images?.[0]?.url || '');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -116,13 +118,13 @@ export default function ProductForm({
           
           <div className="space-y-1.5 md:col-span-2">
             <label className="block text-sm font-medium text-slate-700">Image URL</label>
-            <input 
-              name="image_url" 
-              defaultValue={initialData?.product_images?.[0]?.url || ''} 
-              placeholder="https://example.com/image.jpg"
-              className="w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none" 
+            <input type="hidden" name="image_url" value={imageUrl} />
+            <ImageUploader 
+              value={imageUrl} 
+              onChange={setImageUrl} 
+              bucket="images" 
+              folder="products"
             />
-            <p className="text-xs text-slate-500 mt-1">Provide a direct link to the product image.</p>
           </div>
           
           <div className="space-y-1.5 md:col-span-2">

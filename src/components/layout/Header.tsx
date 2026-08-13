@@ -161,6 +161,17 @@ export function Header() {
                     {item.name}
                   </Link>
                 ))}
+                <Link
+                  href="/account"
+                  className={`block px-4 py-3 rounded-xl text-base font-medium ${
+                    pathname?.startsWith('/account')
+                      ? 'bg-primary-50 text-primary-700'
+                      : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  My Account
+                </Link>
               </div>
             </div>
           </div>

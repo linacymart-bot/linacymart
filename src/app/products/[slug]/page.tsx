@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { AddToCartButton } from '@/components/product/AddToCartButton';
 import { StickyAddToCart } from '@/components/product/StickyAddToCart';
 import { ReviewForm } from '@/components/product/ReviewForm';
-import { ShieldCheck, Truck, RotateCcw, Star, CheckCircle2, ChevronDown, ListChecks, Info, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, Truck, RotateCcw, Star, CheckCircle2, ListChecks, Info, AlertTriangle } from 'lucide-react';
 
 import { Metadata } from 'next';
 

@@ -58,6 +58,25 @@ export async function signupCustomer(formData: FormData) {
   redirect('/account');
 }
 
+export async function resetPassword(formData: FormData) {
+  const email = formData.get('email') as string;
+  
+  if (!email) {
+    return { error: 'Email is required' };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/account/reset-password-confirm`,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
+}
+
 export async function logoutCustomer() {
   const supabase = await createClient();
   await supabase.auth.signOut();

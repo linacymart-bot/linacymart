@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { Package, Heart, LogOut, Settings } from 'lucide-react';
+import { Package, Heart, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
@@ -52,9 +52,6 @@ export default async function AccountPage() {
               </Link>
               <Link href="/account/wishlist" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">
                 <Heart className="w-5 h-5" /> Wishlist
-              </Link>
-              <Link href="/account/settings" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">
-                <Settings className="w-5 h-5" /> Settings
               </Link>
               
               <form action="/actions/customer-auth" method="POST" className="mt-4 border-t border-slate-200 pt-4">

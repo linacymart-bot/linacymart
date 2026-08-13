@@ -61,7 +61,8 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
     const { data: realProducts, error: productsError } = await supabase
       .from('products')
       .select('id, price, sale_price')
-      .in('id', productIds);
+      .in('id', productIds)
+      .eq('active', true);
 
     if (productsError || !realProducts || realProducts.length === 0) {
       throw new Error('Failed to verify product prices.');
@@ -92,20 +93,27 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
         .single();
         
       if (promo && promo.active) {
-        if (promo.discount_type === 'percentage') {
-          discountAmount = subtotal * (Number(promo.discount_value) / 100);
-        } else {
-          discountAmount = Number(promo.discount_value);
-        }
-        
-        // Ensure discount doesn't exceed subtotal
-        discountAmount = Math.min(discountAmount, subtotal);
-        
-        // Increment promo uses
-        const { error: rpcError } = await supabase.rpc('increment_promo_uses', { p_id: promoCodeId });
-        if (rpcError) {
-          // Fallback if RPC doesn't exist
-          await supabase.from('promo_codes').update({ uses: promo.uses + 1 }).eq('id', promoCodeId);
+        // Validate Expiration
+        const isExpired = promo.expires_at && new Date(promo.expires_at) < new Date();
+        // Validate Max Uses
+        const isMaxedOut = promo.max_uses && promo.uses >= promo.max_uses;
+
+        if (!isExpired && !isMaxedOut) {
+          if (promo.discount_type === 'percentage') {
+            discountAmount = subtotal * (Number(promo.discount_value) / 100);
+          } else {
+            discountAmount = Number(promo.discount_value);
+          }
+          
+          // Ensure discount doesn't exceed subtotal
+          discountAmount = Math.min(discountAmount, subtotal);
+          
+          // Increment promo uses securely via RPC or fallback
+          const { error: rpcError } = await supabase.rpc('increment_promo_uses', { p_id: promoCodeId });
+          if (rpcError) {
+            // Fallback if RPC doesn't exist
+            await supabase.from('promo_codes').update({ uses: promo.uses + 1 }).eq('id', promoCodeId);
+          }
         }
       }
     }
@@ -160,7 +168,7 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
     }
 
     // 6. Create Order Record
-    const orderNumber = `ORD-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    const orderNumber = `ORD-${crypto.randomUUID().split('-')[0].toUpperCase()}`;
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({

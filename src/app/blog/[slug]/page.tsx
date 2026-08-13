@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </Link>
 
         <article className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-          {post.cover_image && post.cover_image.trim() !== '' && post.cover_image.trim() !== 'test' && (
+          {post.cover_image && post.cover_image.trim() !== '' && (
             <div className="w-full aspect-[2/1] relative">
               <img 
                 src={post.cover_image.trim()} 

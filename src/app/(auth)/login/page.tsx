@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { ShieldCheck, ArrowRight } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { LoginForm } from './LoginForm';
 
 export const metadata = {
