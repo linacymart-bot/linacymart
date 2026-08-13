@@ -2,14 +2,16 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateDeliveryFee } from '@/app/actions/admin-delivery';
+import { updateDeliveryFee, createDeliveryFee } from '@/app/actions/admin-delivery';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-export default function DeliveryForm({ initialData }: { initialData: any }) {
+export default function DeliveryForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  const isEditing = !!initialData;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,12 +19,14 @@ export default function DeliveryForm({ initialData }: { initialData: any }) {
     const formData = new FormData(e.currentTarget);
     
     startTransition(async () => {
-      const result = await updateDeliveryFee(initialData.id, formData);
+      const result = isEditing 
+        ? await updateDeliveryFee(initialData.id, formData)
+        : await createDeliveryFee(formData);
         
       if (result.success) {
         router.push('/admin/delivery');
       } else {
-        setError(result.error || 'Failed to update fee');
+        setError(result.error || 'Failed to save location');
       }
     });
   };
@@ -34,7 +38,7 @@ export default function DeliveryForm({ initialData }: { initialData: any }) {
           <ArrowLeft className="w-5 h-5 text-slate-700" />
         </Link>
         <h1 className="text-2xl font-bold text-slate-900">
-          Edit Delivery Fee: {initialData.county}
+          {isEditing ? `Edit Delivery Fee: ${initialData.county}` : 'Add New Delivery Location'}
         </h1>
       </div>
 
@@ -47,11 +51,14 @@ export default function DeliveryForm({ initialData }: { initialData: any }) {
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] p-6 space-y-6">
         
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-slate-700">County</label>
+          <label className="block text-sm font-medium text-slate-700">Location Name (County / Area)</label>
           <input 
-            value={initialData.county} 
-            disabled 
-            className="w-full bg-slate-100 border border-slate-200 text-slate-500 px-4 py-2 rounded-xl outline-none" 
+            name="county"
+            defaultValue={initialData?.county || ''} 
+            disabled={isEditing} 
+            required
+            className={`w-full border border-slate-200 px-4 py-2 rounded-xl outline-none ${isEditing ? 'bg-slate-100 text-slate-500' : 'bg-slate-50 focus:ring-2 focus:ring-primary-500 focus:bg-white'}`} 
+            placeholder={!isEditing ? "e.g. Mombasa" : ""}
           />
         </div>
 
@@ -60,8 +67,9 @@ export default function DeliveryForm({ initialData }: { initialData: any }) {
           <input 
             name="fee"
             type="number" 
-            defaultValue={initialData.fee} 
+            defaultValue={initialData?.fee || 0} 
             required 
+            min="0"
             className="w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none" 
           />
         </div>
@@ -73,7 +81,7 @@ export default function DeliveryForm({ initialData }: { initialData: any }) {
             className="flex items-center gap-2 bg-primary-900 hover:bg-primary-800 text-white px-8 py-3 rounded-xl font-medium transition-all disabled:opacity-50"
           >
             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-            Save Fee
+            {isEditing ? 'Save Fee' : 'Add Location'}
           </button>
         </div>
       </form>

@@ -37,3 +37,49 @@ export async function updateDeliveryFee(id: string, formData: FormData) {
     return { success: false, error: error.message };
   }
 }
+
+export async function createDeliveryFee(formData: FormData) {
+  try {
+    const rawData = {
+      county: formData.get('county')?.toString().trim(),
+      fee: Number(formData.get('fee')),
+    };
+
+    if (!rawData.county) {
+      throw new Error('Location/County is required');
+    }
+
+    const { error } = await supabase
+      .from('delivery_zones')
+      .insert({ county: rawData.county, fee: rawData.fee });
+
+    if (error) throw error;
+
+    revalidatePath('/admin/delivery');
+    revalidatePath('/checkout');
+    
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to create delivery location:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteDeliveryFee(id: string) {
+  try {
+    const { error } = await supabase
+      .from('delivery_zones')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+
+    revalidatePath('/admin/delivery');
+    revalidatePath('/checkout');
+    
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to delete delivery location:', error);
+    return { success: false, error: error.message };
+  }
+}

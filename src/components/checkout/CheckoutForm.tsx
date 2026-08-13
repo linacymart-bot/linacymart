@@ -5,9 +5,9 @@ import { useForm as useHookForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCartStore } from '@/store/cartStore';
-import { submitOrder } from '@/app/actions/order';
+import { submitOrder, validatePromoCode } from '@/app/actions/order';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Tag, CheckCircle2, X } from 'lucide-react';
 
 const checkoutSchema = z.object({
   customerName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -29,6 +29,12 @@ export function CheckoutForm({ counties }: CheckoutFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
+  // Promo code states
+  const [promoInput, setPromoInput] = useState('');
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [appliedPromo, setAppliedPromo] = useState<{id: string, code: string, discountType: string, discountValue: number} | null>(null);
+  
   const items = useCartStore((state) => state.items);
   const getCartTotal = useCartStore((state) => state.getCartTotal);
   const router = useRouter();
@@ -49,7 +55,39 @@ export function CheckoutForm({ counties }: CheckoutFormProps) {
   const selectedCounty = counties.find(c => c.id === selectedCountyId);
   const deliveryFee = selectedCounty ? Number(selectedCounty.fee) : 0;
   const subtotal = getCartTotal();
-  const total = subtotal + deliveryFee;
+  
+  // Calculate discount
+  let discountAmount = 0;
+  if (appliedPromo) {
+    if (appliedPromo.discountType === 'percentage') {
+      discountAmount = subtotal * (appliedPromo.discountValue / 100);
+    } else {
+      discountAmount = appliedPromo.discountValue;
+    }
+    discountAmount = Math.min(discountAmount, subtotal);
+  }
+  
+  const total = (subtotal - discountAmount) + deliveryFee;
+
+  const handleApplyPromo = async () => {
+    if (!promoInput.trim()) return;
+    setIsApplyingPromo(true);
+    setPromoError(null);
+    
+    const result = await validatePromoCode(promoInput);
+    if (result.valid && result.promo) {
+      setAppliedPromo(result.promo);
+      setPromoInput('');
+    } else {
+      setPromoError(result.error || 'Invalid promo code');
+    }
+    setIsApplyingPromo(false);
+  };
+
+  const removePromo = () => {
+    setAppliedPromo(null);
+    setPromoError(null);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -72,6 +110,9 @@ export function CheckoutForm({ counties }: CheckoutFormProps) {
     formData.append('deliveryCountyId', data.deliveryCountyId);
     formData.append('deliveryAddress', data.deliveryAddress);
     formData.append('orderNotes', data.orderNotes || '');
+    if (appliedPromo) {
+      formData.append('promoCodeId', appliedPromo.id);
+    }
 
     const result = await submitOrder(formData, items);
 
@@ -221,11 +262,62 @@ export function CheckoutForm({ counties }: CheckoutFormProps) {
             ))}
           </div>
 
+          {/* Promo Code Section */}
+          <div className="mb-6 pt-4 border-t border-slate-200">
+            {appliedPromo ? (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-3 flex justify-between items-center">
+                <div className="flex items-center gap-2 text-green-700 font-medium text-sm">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Code <strong>{appliedPromo.code}</strong> applied!</span>
+                </div>
+                <button 
+                  onClick={removePromo}
+                  type="button"
+                  className="text-green-600 hover:text-green-800 p-1"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div>
+                <label className="text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                  <Tag className="w-4 h-4 text-primary-500" /> Have a promo code?
+                </label>
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                    placeholder="Enter code"
+                    className="flex-grow input-field bg-white py-2"
+                  />
+                  <button 
+                    type="button"
+                    onClick={handleApplyPromo}
+                    disabled={isApplyingPromo || !promoInput.trim()}
+                    className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 disabled:opacity-50 transition-colors"
+                  >
+                    {isApplyingPromo ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply'}
+                  </button>
+                </div>
+                {promoError && <p className="text-red-500 text-xs mt-1">{promoError}</p>}
+              </div>
+            )}
+          </div>
+
           <div className="space-y-3 pt-4 border-t border-slate-200 text-sm">
             <div className="flex justify-between text-slate-600">
               <span>Subtotal</span>
               <span className="font-medium text-slate-900">KSh {subtotal.toLocaleString()}</span>
             </div>
+            
+            {appliedPromo && (
+              <div className="flex justify-between text-green-600 font-medium">
+                <span>Discount ({appliedPromo.code})</span>
+                <span>-KSh {discountAmount.toLocaleString()}</span>
+              </div>
+            )}
+
             <div className="flex justify-between text-slate-600">
               <span>Delivery (G4S)</span>
               <span className="font-medium text-slate-900">

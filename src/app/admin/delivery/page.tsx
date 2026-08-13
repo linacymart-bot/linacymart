@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
-import { Search, Pencil } from 'lucide-react';
+import { Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { DeleteDeliveryButton } from './DeleteDeliveryButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,10 @@ export default async function AdminDeliveryPage() {
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Delivery Zones</h1>
           <p className="text-slate-500 mt-1">Manage shipping fees across different counties.</p>
         </div>
+        <Link href="/admin/delivery/new" className="btn-primary flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          Add Location
+        </Link>
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] overflow-hidden">
@@ -47,10 +52,11 @@ export default async function AdminDeliveryPage() {
                     <td className="px-6 py-4 text-right font-medium text-slate-900">
                       KSh {Number(zone.fee).toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link href={`/admin/delivery/${zone.id}`} className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
+                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                      <Link href={`/admin/delivery/${zone.id}`} className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="Edit location">
                         <Pencil className="w-4 h-4" />
                       </Link>
+                      <DeleteDeliveryButton id={zone.id} />
                     </td>
                   </tr>
                 ))

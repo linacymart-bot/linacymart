@@ -36,10 +36,14 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
       deliveryCountyId: formData.get('deliveryCountyId') as string,
       deliveryAddress: formData.get('deliveryAddress') as string,
       orderNotes: formData.get('orderNotes') as string,
+      promoCodeId: formData.get('promoCodeId') as string || undefined,
       items: cartItems,
     };
 
+    // Update order schema dynamically here or assume promoCodeId is validated manually below.
+    // We'll validate it manually since it's an optional UUID.
     const validatedData = orderSchema.parse(payload);
+    const promoCodeId = payload.promoCodeId;
 
     // 2. Fetch the delivery fee for the selected county to ensure it hasn't been tampered with
     const { data: county, error: countyError } = await supabase
@@ -79,8 +83,34 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
       };
     });
 
+    let discountAmount = 0;
+    if (promoCodeId) {
+      const { data: promo } = await supabase
+        .from('promo_codes')
+        .select('*')
+        .eq('id', promoCodeId)
+        .single();
+        
+      if (promo && promo.active) {
+        if (promo.discount_type === 'percentage') {
+          discountAmount = subtotal * (Number(promo.discount_value) / 100);
+        } else {
+          discountAmount = Number(promo.discount_value);
+        }
+        
+        // Ensure discount doesn't exceed subtotal
+        discountAmount = Math.min(discountAmount, subtotal);
+        
+        // Increment promo uses
+        await supabase.rpc('increment_promo_uses', { p_id: promoCodeId }).catch(() => {
+          // Fallback if RPC doesn't exist
+          supabase.from('promo_codes').update({ uses: promo.uses + 1 }).eq('id', promoCodeId);
+        });
+      }
+    }
+
     const deliveryFee = Number(county.fee);
-    const totalAmount = subtotal + deliveryFee;
+    const totalAmount = (subtotal - discountAmount) + deliveryFee;
 
     // 5. Create or Update Customer Record
     let customerId;
@@ -132,6 +162,8 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
         total: totalAmount,
         status: 'New',
         notes: validatedData.orderNotes || null,
+        promo_code_id: promoCodeId || null,
+        discount_amount: discountAmount,
       })
       .select('id, order_number')
       .single();
@@ -196,6 +228,12 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
                     <td style="padding: 4px 0; color: #666;">Subtotal:</td>
                     <td style="padding: 4px 0; text-align: right; font-weight: bold;">KSh ${subtotal.toLocaleString()}</td>
                   </tr>
+                  ${discountAmount > 0 ? `
+                  <tr>
+                    <td style="padding: 4px 0; color: #16a34a;">Discount:</td>
+                    <td style="padding: 4px 0; text-align: right; font-weight: bold; color: #16a34a;">-KSh ${discountAmount.toLocaleString()}</td>
+                  </tr>
+                  ` : ''}
                   <tr>
                     <td style="padding: 4px 0; color: #666;">Delivery Fee:</td>
                     <td style="padding: 4px 0; text-align: right; font-weight: bold;">KSh ${deliveryFee.toLocaleString()}</td>
@@ -230,5 +268,50 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
   } catch (error: any) {
     console.error('Order submission error:', error);
     return { success: false, error: error.message || 'An unexpected error occurred.' };
+  }
+}
+
+export async function validatePromoCode(code: string) {
+  try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    const { data: promo, error } = await supabase
+      .from('promo_codes')
+      .select('id, code, discount_type, discount_value, max_uses, uses, active, expires_at')
+      .eq('code', code.toUpperCase())
+      .single();
+
+    if (error || !promo) {
+      return { valid: false, error: 'Invalid promo code.' };
+    }
+
+    if (!promo.active) {
+      return { valid: false, error: 'This promo code is no longer active.' };
+    }
+
+    if (promo.expires_at && new Date(promo.expires_at) < new Date()) {
+      return { valid: false, error: 'This promo code has expired.' };
+    }
+
+    if (promo.max_uses && promo.uses >= promo.max_uses) {
+      return { valid: false, error: 'This promo code has reached its usage limit.' };
+    }
+
+    return { 
+      valid: true, 
+      promo: {
+        id: promo.id,
+        code: promo.code,
+        discountType: promo.discount_type,
+        discountValue: Number(promo.discount_value)
+      } 
+    };
+
+  } catch (error: any) {
+    console.error('Promo validation error:', error);
+    return { valid: false, error: 'Failed to validate promo code.' };
   }
 }

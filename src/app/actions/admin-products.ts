@@ -62,6 +62,7 @@ export async function createProduct(formData: FormData) {
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
+    revalidatePath('/', 'layout');
     
     return { success: true, productId: data.id };
   } catch (error: any) {
@@ -110,6 +111,7 @@ export async function updateProduct(id: string, formData: FormData) {
     revalidatePath('/admin/products');
     revalidatePath('/products');
     revalidatePath(`/products/${validatedData.slug}`);
+    revalidatePath('/', 'layout'); // Clears the entire Next.js router cache for public pages
     
     return { success: true };
   } catch (error: any) {

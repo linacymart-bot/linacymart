@@ -6,7 +6,45 @@ import { StickyAddToCart } from '@/components/product/StickyAddToCart';
 import { ReviewForm } from '@/components/product/ReviewForm';
 import { ShieldCheck, Truck, RotateCcw, Star, CheckCircle2, ChevronDown, ListChecks, Info, AlertTriangle } from 'lucide-react';
 
+import { Metadata } from 'next';
+
 export const revalidate = 60; // Revalidate every minute
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = await createClient();
+  
+  const { data: product } = await supabase
+    .from('products')
+    .select('name, short_description, product_images(url, is_primary)')
+    .eq('slug', slug)
+    .single();
+
+  if (!product) {
+    return { title: 'Product Not Found' };
+  }
+
+  const primaryImage = product.product_images?.find((img: any) => img.is_primary)?.url 
+    || product.product_images?.[0]?.url 
+    || '/placeholder.svg';
+
+  return {
+    title: `${product.name} | BF Suma Kenya`,
+    description: product.short_description || `Buy ${product.name} online in Kenya.`,
+    openGraph: {
+      title: product.name,
+      description: product.short_description || `Buy ${product.name} online in Kenya.`,
+      images: [primaryImage],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.short_description || `Buy ${product.name} online in Kenya.`,
+      images: [primaryImage],
+    }
+  };
+}
 
 export default async function ProductPage({
   params,
@@ -44,8 +82,33 @@ export default async function ProductPage({
     ? (reviews.reduce((acc: number, review: any) => acc + review.rating, 0) / reviews.length).toFixed(1)
     : '5.0';
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: primaryImage,
+    description: product.short_description || product.full_description,
+    offers: {
+      '@type': 'Offer',
+      price: product.sale_price ? product.sale_price : product.price,
+      priceCurrency: 'KES',
+      availability: 'https://schema.org/InStock',
+    },
+    ...(reviews.length > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: averageRating,
+        reviewCount: reviews.length,
+      }
+    })
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200 py-4">
         <div className="container-custom">

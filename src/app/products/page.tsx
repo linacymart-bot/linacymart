@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { Filter, ArrowDownUp } from 'lucide-react';
+import { ProductFilters } from './ProductFilters';
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -34,6 +35,8 @@ export default async function ProductsPage({
     .eq('status', 'published');
 
   const qParam = params.q as string | undefined;
+  const minPriceParam = params.minPrice ? Number(params.minPrice) : undefined;
+  const maxPriceParam = params.maxPrice ? Number(params.maxPrice) : undefined;
 
   // Filter by category if specified
   if (categoryParam && categoryParam !== 'all') {
@@ -43,6 +46,14 @@ export default async function ProductsPage({
   // Filter by search query if specified
   if (qParam) {
     query = query.ilike('name', `%${qParam}%`);
+  }
+
+  // Filter by price range
+  if (minPriceParam && !isNaN(minPriceParam)) {
+    query = query.gte('price', minPriceParam);
+  }
+  if (maxPriceParam && !isNaN(maxPriceParam)) {
+    query = query.lte('price', maxPriceParam);
   }
 
   // Apply sorting
@@ -117,6 +128,7 @@ export default async function ProductsPage({
                   </li>
                 ))}
               </ul>
+              <ProductFilters />
             </div>
           </aside>
 
