@@ -81,10 +81,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </Link>
 
         <article className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-          {post.cover_image && (post.cover_image.startsWith('http') || post.cover_image.startsWith('/')) && (
+          {post.cover_image && post.cover_image.trim() !== '' && post.cover_image.trim() !== 'test' && (
             <div className="w-full aspect-[2/1] relative">
               <img 
-                src={post.cover_image} 
+                src={post.cover_image.trim()} 
                 alt={post.title} 
                 className="w-full h-full object-cover"
               />
