@@ -14,6 +14,36 @@ export default async function CheckoutPage() {
     .select('id, county, fee')
     .order('county');
 
+  // Fetch logged in user and customer details for auto-fill
+  const { data: { user } } = await supabase.auth.getUser();
+  let defaultValues = null;
+  
+  if (user) {
+    const { data: customer } = await supabase
+      .from('customers')
+      .select('full_name, email, phone, delivery_location, county')
+      .eq('email', user.email)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (customer) {
+      const countyId = counties?.find(c => c.county === customer.county)?.id || '';
+      defaultValues = {
+        customerName: customer.full_name || user.user_metadata?.full_name || '',
+        customerEmail: customer.email || user.email || '',
+        customerPhone: customer.phone || '',
+        deliveryAddress: customer.delivery_location || '',
+        deliveryCountyId: countyId,
+      };
+    } else {
+      defaultValues = {
+        customerName: user.user_metadata?.full_name || '',
+        customerEmail: user.email || '',
+      };
+    }
+  }
+
   return (
     <div className="bg-slate-50 min-h-screen py-8">
       <div className="container-custom max-w-6xl mx-auto">
@@ -30,7 +60,7 @@ export default async function CheckoutPage() {
           </div>
         </div>
 
-        <CheckoutForm counties={counties || []} />
+        <CheckoutForm counties={counties || []} defaultValues={defaultValues || undefined} />
       </div>
     </div>
   );

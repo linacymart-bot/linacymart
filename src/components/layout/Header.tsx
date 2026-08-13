@@ -80,6 +80,17 @@ export function Header() {
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             </form>
+            
+            <Link 
+              href="/account"
+              className="text-slate-700 hover:text-primary-600 p-2 relative flex items-center gap-2 group"
+            >
+              <div className="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <span className="text-sm font-semibold hidden sm:block group-hover:text-primary-600">Account</span>
+            </Link>
+
             <button 
               onClick={() => setCartDrawerOpen(true)}
               className="text-slate-700 hover:text-primary-600 p-2 relative flex items-center gap-2 group"

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { ArrowRight, ShieldCheck, Truck, Clock } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/MotionWrapper';
+import { WishlistButton } from '@/components/products/WishlistButton';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -26,6 +27,20 @@ export default async function Home() {
     .eq('status', 'published')
     .eq('featured', true)
     .limit(4);
+
+  // Fetch user's wishlisted product IDs if logged in
+  let userWishlistIds = new Set<string>();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user && featuredProducts) {
+    const { data: wishlists } = await supabase
+      .from('wishlists')
+      .select('product_id')
+      .eq('user_id', user.id);
+      
+    if (wishlists) {
+      userWishlistIds = new Set(wishlists.map(w => w.product_id));
+    }
+  }
 
   return (
     <div>
@@ -121,6 +136,12 @@ export default async function Home() {
                         SALE
                       </span>
                     )}
+                    <div className="z-20 relative">
+                      <WishlistButton 
+                        productId={product.id} 
+                        initialIsWishlisted={userWishlistIds.has(product.id)} 
+                      />
+                    </div>
                   </Link>
                   <div className="p-3 sm:p-5">
                     <div className="h-10 sm:h-14 mb-2 sm:mb-4 overflow-hidden">

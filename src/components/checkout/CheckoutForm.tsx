@@ -22,9 +22,13 @@ type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 interface CheckoutFormProps {
   counties: { id: string; county: string; fee: number }[];
+  defaultValues?: Partial<CheckoutFormData>;
 }
 
-export function CheckoutForm({ counties }: CheckoutFormProps) {
+export function CheckoutForm({ 
+  counties, 
+  defaultValues 
+}: CheckoutFormProps) {
   const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +50,7 @@ export function CheckoutForm({ counties }: CheckoutFormProps) {
     formState: { errors },
   } = useHookForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       deliveryCountyId: '',
     },
   });

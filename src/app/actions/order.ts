@@ -113,11 +113,17 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
     const deliveryFee = Number(county.fee);
     const totalAmount = (subtotal - discountAmount) + deliveryFee;
 
+    // Check for authenticated user to link
+    const { createClient: createServerClient } = await import('@/utils/supabase/server');
+    const authSupabase = await createServerClient();
+    const { data: { user } } = await authSupabase.auth.getUser();
+    const authUserId = user?.id || null;
+
     // 5. Create or Update Customer Record
     let customerId;
     const { data: existingCustomer } = await supabase
       .from('customers')
-      .select('id')
+      .select('id, user_id')
       .eq('phone', validatedData.customerPhone)
       .maybeSingle();
 
@@ -129,6 +135,7 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
         email: validatedData.customerEmail || null,
         county: county.county,
         delivery_location: validatedData.deliveryAddress,
+        user_id: existingCustomer.user_id || authUserId, // Link if not already linked
       }).eq('id', customerId);
     } else {
       const { data: newCustomer, error: customerError } = await supabase
@@ -140,6 +147,7 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
           county: county.county,
           town: 'N/A',
           delivery_location: validatedData.deliveryAddress,
+          user_id: authUserId,
         })
         .select('id')
         .single();
@@ -158,6 +166,7 @@ export async function submitOrder(formData: FormData, cartItems: any[]) {
       .insert({
         order_number: orderNumber,
         customer_id: customerId,
+        user_id: authUserId,
         subtotal: subtotal,
         delivery_fee: deliveryFee,
         total: totalAmount,
