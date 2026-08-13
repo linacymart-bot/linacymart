@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/utils/supabase/server';
 import { Package, TrendingUp, Users, Clock, Search } from 'lucide-react';
 import Link from 'next/link';
+import { DashboardCharts } from './DashboardCharts';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,6 +127,11 @@ export default async function AdminDashboard() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Charts */}
+      <div className="w-full">
+        <DashboardCharts orders={orders as any} />
       </div>
 
       {/* Main Content Grid */}

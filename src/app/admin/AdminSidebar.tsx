@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogOut, ShieldCheck, LayoutDashboard, ShoppingBag, Package, Tags, Truck, Menu, X, Star, Tag } from 'lucide-react';
+import { LogOut, ShieldCheck, LayoutDashboard, ShoppingBag, Package, Tags, Truck, Menu, X, Star, Tag, FileText } from 'lucide-react';
 import { logoutAdmin } from '@/app/actions/auth';
 
 export default function AdminSidebar() {
@@ -18,6 +18,7 @@ export default function AdminSidebar() {
     { href: '/admin/delivery', icon: Truck, label: 'Delivery Zones' },
     { href: '/admin/reviews', icon: Star, label: 'Reviews' },
     { href: '/admin/promo-codes', icon: Tag, label: 'Promo Codes' },
+    { href: '/admin/blog', icon: FileText, label: 'Blog' },
   ];
 
   return (
