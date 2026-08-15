@@ -28,8 +28,7 @@ export default async function WishlistPage() {
         slug,
         price,
         sale_price,
-        image_url,
-        category,
+        short_description,
         categories (name, slug),
         product_images (url, is_primary)
       )
