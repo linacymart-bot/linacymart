@@ -35,7 +35,7 @@ export default async function CheckoutSuccessPage({
       order_items (
         quantity,
         price,
-        product_name
+        product:products(name)
       )
     `)
     .eq('order_number', orderNumber)
@@ -54,7 +54,7 @@ export default async function CheckoutSuccessPage({
   }
 
   const itemsList = order.order_items.map((item: any) => 
-    `- ${item.quantity}x ${item.product_name} (KSh ${Number(item.price).toLocaleString()})`
+    `- ${item.quantity}x ${item.product?.name || 'Product'} (KSh ${Number(item.price).toLocaleString()})`
   ).join('\n');
 
   // WhatsApp integration for M-Pesa push / manual payment confirmation
