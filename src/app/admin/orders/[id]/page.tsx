@@ -22,6 +22,7 @@ export default async function OrderDetailsPage({
     .select(`
       *,
       customer:customers(full_name, phone, email, county, town, delivery_location),
+      promo:promo_codes(code, discount_type, discount_value),
       items:order_items(
         id,
         quantity,
@@ -124,6 +125,22 @@ export default async function OrderDetailsPage({
                 <span className="text-slate-500">Subtotal</span>
                 <span className="font-medium text-slate-900">KSh {Number(order.subtotal).toLocaleString()}</span>
               </div>
+              {order.discount_amount && Number(order.discount_amount) > 0 && (() => {
+                const promo = Array.isArray(order.promo) ? order.promo[0] : order.promo;
+                return (
+                  <div className="flex justify-between items-center mb-3 text-sm">
+                    <span className="text-green-600 font-medium flex items-center gap-1">
+                      🏷️ Promo Code
+                      {promo?.code && (
+                        <span className="ml-1 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold tracking-wide">
+                          {promo.code}
+                        </span>
+                      )}
+                    </span>
+                    <span className="font-medium text-green-600">- KSh {Number(order.discount_amount).toLocaleString()}</span>
+                  </div>
+                );
+              })()}
               <div className="flex justify-between items-center mb-4 text-sm">
                 <span className="text-slate-500">Delivery Fee</span>
                 <span className="font-medium text-slate-900">KSh {Number(order.delivery_fee).toLocaleString()}</span>
