@@ -2,8 +2,7 @@ import Link from 'next/link';
 import { CheckCircle2, MessageCircle } from 'lucide-react';
 import { CartClearer } from '@/components/checkout/CartClearer';
 
-import { createClient } from '@/utils/supabase/server';
-
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
@@ -25,7 +24,10 @@ export default async function CheckoutSuccessPage({
     );
   }
 
-  const supabase = await createClient();
+  const supabase = createSupabaseClient({
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  });
   const { data: order } = await supabase
     .from('orders')
     .select(`

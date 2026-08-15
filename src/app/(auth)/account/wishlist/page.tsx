@@ -29,7 +29,9 @@ export default async function WishlistPage() {
         price,
         sale_price,
         image_url,
-        category
+        category,
+        categories (name, slug),
+        product_images (url, is_primary)
       )
     `)
     .eq('user_id', user.id)
