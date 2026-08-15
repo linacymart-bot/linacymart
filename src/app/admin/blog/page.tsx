@@ -1,11 +1,14 @@
-import { createAdminClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { Search, Plus, Pencil, FileText } from 'lucide-react';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminBlogPage() {
-  const supabase = await createAdminClient();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   const { data: posts } = await supabase
     .from('blog_posts')

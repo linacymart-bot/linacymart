@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { Package, TrendingUp, Users, Clock, Search } from 'lucide-react';
 import Link from 'next/link';
 import { DashboardCharts } from './DashboardCharts';
@@ -6,7 +6,10 @@ import { DashboardCharts } from './DashboardCharts';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  const supabase = await createAdminClient();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   // Fetch orders (latest first)
   const { data: rawOrders, error } = await supabase

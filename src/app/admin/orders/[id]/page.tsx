@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, User, MapPin, Package, Clock, CreditCard } from 'lucide-react';
@@ -12,7 +12,10 @@ export default async function OrderDetailsPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params;
-  const supabase = await createAdminClient();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   const { data: order } = await supabase
     .from('orders')
