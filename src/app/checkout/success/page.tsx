@@ -24,10 +24,10 @@ export default async function CheckoutSuccessPage({
     );
   }
 
-  const supabase = createSupabaseClient({
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  });
+  const supabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
   const { data: order } = await supabase
     .from('orders')
     .select(`
