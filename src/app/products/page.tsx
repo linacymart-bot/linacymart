@@ -35,7 +35,7 @@ export default async function ProductsPage({
     .eq('active', true)
     .eq('status', 'published');
 
-  const qParam = params.q as string | undefined;
+  const qParam = params.q ? String(params.q).slice(0, 100) : undefined;
   const minPriceParam = params.minPrice ? Number(params.minPrice) : undefined;
   const maxPriceParam = params.maxPrice ? Number(params.maxPrice) : undefined;
 
