@@ -17,8 +17,37 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "BF Suma Kenya | Health & Wellness Products",
-  description: "Independent BF Suma distributor in Kenya. Shop premium health, wellness, and beauty products.",
+  metadataBase: new URL('https://www.linacymart.co.ke'),
+  title: {
+    default: "BF Suma Kenya | Premium Health & Wellness Products",
+    template: "%s | BF Suma Kenya"
+  },
+  description: "Shop authentic BF Suma health, wellness, and beauty products in Kenya. Fast delivery nationwide. Enhance your vitality and well-being today.",
+  keywords: ["BF Suma Kenya", "Health supplements", "Wellness products", "BF Suma distributor", "Buy BF Suma online"],
+  openGraph: {
+    title: "BF Suma Kenya | Premium Health & Wellness Products",
+    description: "Shop authentic BF Suma health, wellness, and beauty products in Kenya. Fast delivery nationwide.",
+    url: "https://www.linacymart.co.ke",
+    siteName: "BF Suma Kenya",
+    locale: "en_KE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BF Suma Kenya | Premium Health & Wellness",
+    description: "Shop authentic BF Suma health, wellness, and beauty products in Kenya.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
