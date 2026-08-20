@@ -5,7 +5,7 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://linacy.com';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.linacymart.co.ke';
 
   // Base static routes
   const routes: MetadataRoute.Sitemap = [
